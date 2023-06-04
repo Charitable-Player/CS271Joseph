@@ -1,0 +1,34 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/b/RAM4K.hdl
+
+/**
+ * Memory of 4K registers, each 16 bit-wide. Out holds the value
+ * stored at the memory location specified by address. If load==1, then 
+ * the in value is loaded into the memory location specified by address 
+ * (the loaded value will be emitted to out from the next time step onward).
+ */
+
+CHIP RAM4K {
+    IN in[16], load, address[12];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+    DMux8Way(in=load, sel=address[0..2], a=ao, b=bo, c=co, d=do, e=eo, f=fo, g=go, h=ho);
+    
+    RAM512(in=in, load=ao, address=address[3..11], out=aoOut);
+    RAM512(in=in, load=bo, address=address[3..11], out=boOut);
+    RAM512(in=in, load=co, address=address[3..11], out=coOut);
+    RAM512(in=in, load=do, address=address[3..11], out=doOut);
+    RAM512(in=in, load=eo, address=address[3..11], out=eoOut);
+    RAM512(in=in, load=fo, address=address[3..11], out=foOut);
+    RAM512(in=in, load=go, address=address[3..11], out=goOut);
+    RAM512(in=in, load=ho, address=address[3..11], out=hoOut);
+    Mux8Way16(a=aoOut, b=boOut, c=coOut, d=doOut, e=eoOut, f=foOut, g=goOut, h=hoOut, sel=address[0..2], out=out);
+    
+    
+
+    
+}
